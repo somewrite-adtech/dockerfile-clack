@@ -28,5 +28,5 @@ deployment:
       - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
       - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
       - $(aws ecr get-login --region us-east-1)
-      - docker tag dockerfile-clack:latest $(ECR_REPOSITORY)/dockerfile-clack:latest
-      - docker push $(ECR_REPOSITORY)/clack
+      - docker tag dockerfile-clack:latest $ECR_REPOSITORY/dockerfile-clack:latest
+      - docker push $ECR_REPOSITORY/clack
