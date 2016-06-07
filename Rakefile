@@ -8,11 +8,11 @@ namespace :docker do
 
   namespace :build do
     task :clack do
-      sh 'docker build -t rudolphm/clack ./'
+      sh 'docker build -t dockerfile-clack ./'
     end
 
     task :test do
-      sh 'docker build -t rudolphm/clack-test ./test/'
+      sh 'docker build -t dockerfile-clack-test ./test/'
     end
   end
 

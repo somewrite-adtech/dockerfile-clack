@@ -11,17 +11,20 @@ dependencies:
     - docker info
     - if [[ -e ~/docker/image.tar ]]; then docker load --input ~/docker/image.tar; fi
     - bundle exec rake docker:build
-    - mkdir -p ~/docker; docker save rudolphm/clack > ~/docker/image.tar
+    - mkdir -p ~/docker; docker save dockerfile-clack > ~/docker/image.tar
 
 test:
   override:
     # - bundle exec rake
-    - docker run -p 6000:6000 -d -t rudolphm/clack-test; sleep 15
+    - docker run -p 6000:6000 -d -t dockerfile-clack-test; sleep 15
     - curl --retry 10 --retry-delay 5 -v http://localhost:6000
 
 deployment:
   hub: 
     branch: master
     commands:
-      - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
-      - docker push rudolphm/clack
+      - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+      - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+      - $(aws ecr get-login --region us-east-1)
+      - docker tag dockerfile-clack:latest $(ECR_REPOSITORY)/dockerfile-clack:latest
+      - docker push $(ECR_REPOSITORY)/clack
